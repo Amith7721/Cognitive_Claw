@@ -1,0 +1,2 @@
+# Cognitive_Claw
+CLASH OF THE CLAWS — HACKATHON 2026
