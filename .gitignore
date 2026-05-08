@@ -1,0 +1,46 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+lib/generated/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android
+.gradle/
+local.properties
+*.keystore
+*.jks
+*.apk
+*.aab
+
+# iOS/macOS
+Pods/
+Podfile.lock
+Frameworks/
+*.xcworkspace
+*.xcodeproj
+DerivedData/
+*.swp
+*.lock
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# Sensitive Data
+.env
+assets/config/.env
+*.secret
+
+# Hive/Storage (for local testing only, shouldn't be pushed)
+*.hive
+*.lock
+# If you want to keep your local data during dev, uncomment below:
+# app_data/
