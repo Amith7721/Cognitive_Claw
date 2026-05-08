@@ -16,6 +16,16 @@ Cognitive Claw bridges this gap by implementing a **Neural Identity Layer**. It 
 
 ---
 
+## 🏛️ OpenClaw Architecture: The Agentic Core
+Cognitive Claw is powered by **OpenClaw**, a modular agentic framework that treats AI personality and logic as "hot-swappable" DNA files.
+
+*   **Soul Layer:** Defines the core ethical and behavioral persona of the agent.
+*   **Memory Layer:** Provides the context of previous interactions and learned user patterns.
+*   **Heartbeat Layer:** Manages real-time processing, notifications, and scheduled behavioral checks.
+*   **Modular Skills:** A library of specialized Markdown files (Meeting Prep, Research, Productivity) that the agent "activates" based on current user needs.
+
+---
+
 ## 🚀 Core Features
 
 ### 🧠 Neural Memory Vault (Cognitive DNA)
