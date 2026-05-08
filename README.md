@@ -68,15 +68,15 @@ Cognitive Claw is powered by **OpenClaw**, a modular agentic framework that trea
     flutter pub get
     ```
 
-### ⚠️ Note on Google Authentication (Calendar Sync)
-As this is a development-level application for a hackathon, you may encounter a verification warning when connecting your Google Calendar:
-1.  **Google may show:** *"Google hasn't verified this app"*
-2.  **To proceed:** Click on **Advanced** and then select **"Continue to Cognitive Claw (unsafe)"** to authorize the neural calendar sync.
-
 4.  **Run:**
     ```bash
     flutter run
     ```
+
+### ⚠️ Note on Google Authentication (Calendar Sync)
+As this is a development-level application for a hackathon, you may encounter a verification warning when connecting your Google Calendar:
+1.  **Google may show:** *"Google hasn't verified this app"*
+2.  **To proceed:** Click on **Advanced** and then select **"Continue to Cognitive Claw (unsafe)"** to authorize the neural calendar sync.
 
 ---
 
