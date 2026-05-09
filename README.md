@@ -90,3 +90,6 @@ As this is a development-level application for a hackathon, you may encounter a 
 
 ---
 **Cognitive Claw** — *Building the future of Agentic Personal Intelligence.*
+
+**DEMO VIDEO LINK**  https://1drv.ms/u/c/69bfd0c6cb05fad5/IQCTFC2vYHdrSYYkkVjyhaJ-AaMB_gGgqgsRucGqZIlJPVU?e=aEglD7
+
