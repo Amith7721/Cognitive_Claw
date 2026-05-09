@@ -39,7 +39,7 @@ class _TasksScreenState extends State<TasksScreen> {
     showAILoadingDialog(context, settings.modelName);
 
     try {
-      final response = await OpenClawLLMService.generate(
+      final result = await OpenClawLLMService.generate(
         prompt: """
 You are an AI productivity assistant.
 
@@ -57,10 +57,14 @@ Give:
 
       if (!mounted) return;
       
+      final response = result['response'] ?? "";
+      final usedModel = result['model'] ?? "unknown";
+
       setState(() {
-        latestAdvice = response.isEmpty ? null : response;
+        latestAdvice = response.isEmpty ? null : "$response\n\n---\n*Orchestrated by: $usedModel*";
       });
       
+      if (!mounted) return;
       Navigator.pop(context); // Close loading dialog
 
       showDialog(
@@ -83,7 +87,7 @@ Give:
           ),
           content: SingleChildScrollView(
             child: MarkdownBody(
-              data: response.isEmpty ? "No AI response" : response,
+              data: response.isEmpty ? "No AI response" : "$response\n\n---\n*Orchestrated by: $usedModel*",
               styleSheet: MarkdownStyleSheet(
                 p: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color, height: 1.6, fontSize: 16),
                 h1: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodyLarge?.color),
@@ -94,11 +98,15 @@ Give:
                 tableCellsPadding: const EdgeInsets.all(10),
                 listBullet: const TextStyle(color: Color(0xFF00F2FE), fontSize: 18),
                 blockquoteDecoration: BoxDecoration(
-                  color: const Color(0xFF00F2FE).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  color: const Color(0xFF6B4EE6).withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(12),
                   border: const Border(left: BorderSide(color: Color(0xFF00F2FE), width: 4)),
                 ),
-                blockquote: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black87),
+                blockquote: TextStyle(
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ),
           ),

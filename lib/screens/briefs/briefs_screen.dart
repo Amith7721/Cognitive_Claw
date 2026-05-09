@@ -51,11 +51,13 @@ class _BriefsScreenState extends State<BriefsScreen> {
       final events = await CalendarService.getUpcomingEvents(date: selectedDate);
       final initial = await MeetingBriefService.getInitialBriefs(events);
 
+      if (!mounted) return;
       setState(() {
         briefs = initial;
         loading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         errorMessage = e.toString();
         loading = false;

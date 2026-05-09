@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../services/claude_service.dart';
 import '../services/openclaw_llm_service.dart';
 import '../core/theme/app_theme.dart';
 
@@ -28,10 +27,17 @@ class AIProvider extends ChangeNotifier {
       _response = null;
       notifyListeners();
 
-      _response = await ClaudeService.generate(
+      final result = await OpenClawLLMService.generate(
         prompt: prompt,
-        userName: userName,
+        model: model ?? 'auto',
       );
+
+      _response = result['response'] ?? '';
+      final usedModel = result['model'] ?? 'unknown';
+
+      // Always append the model signature for Research results
+      _response = "$_response\n\n---\n*Active Research Engine: $usedModel*";
+
     } catch (e) {
       _error = e.toString();
       _response = "AI Error: $e";

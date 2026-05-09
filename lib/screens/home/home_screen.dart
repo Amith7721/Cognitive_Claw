@@ -490,6 +490,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         tableHead: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF00F2FE)),
                         tableCellsPadding: const EdgeInsets.all(12),
                         listBullet: TextStyle(color: const Color(0xFF00F2FE), fontSize: 18),
+                        blockquoteDecoration: BoxDecoration(
+                          color: const Color(0xFF6B4EE6).withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(16),
+                          border: const Border(left: BorderSide(color: Color(0xFF00F2FE), width: 4)),
+                        ),
+                        blockquote: TextStyle(
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 30),

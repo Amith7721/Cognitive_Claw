@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
@@ -15,10 +16,37 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final models = {
-    'OpenAI GPT-OSS 20B (Free)': 'openai/gpt-oss-20b:free',
-    'OpenAI GPT-OSS 120B (Free)': 'openai/gpt-oss-120b:free',
-    'Mistral 7B (Free)': 'mistralai/mistral-7b-instruct:free',
-    'Llama 3.3 70B (Free)': 'meta-llama/llama-3.3-70b-instruct:free',
+    'Auto Mode (Recommended)': 'openrouter/free',
+    'Fast Mode (Balanced)': 'openai/gpt-oss-20b:free',
+    'Smart Mode (Intelligence)': 'z-ai/glm-4.5-air:free',
+    'Research Mode (Deep Thinker)': 'openai/gpt-oss-120b:free',
+  };
+
+  final Map<String, Map<String, dynamic>> modelMetadata = {
+    'openrouter/free': {
+      'tag': 'SMART',
+      'color': const Color(0xFF00F2FE),
+      'icon': Icons.hub_rounded,
+      'desc': 'Universal free router. Best AI for any task.'
+    },
+    'openai/gpt-oss-20b:free': {
+      'tag': 'BALANCED',
+      'color': Colors.greenAccent,
+      'icon': Icons.bolt_rounded,
+      'desc': 'Optimal for daily tasks and quick assistance.'
+    },
+    'z-ai/glm-4.5-air:free': {
+      'tag': 'INTELLIGENCE',
+      'color': Colors.orangeAccent,
+      'icon': Icons.auto_awesome_rounded,
+      'desc': 'Advanced multilingual intelligence and reasoning.'
+    },
+    'openai/gpt-oss-120b:free': {
+      'tag': 'RESEARCH',
+      'color': const Color(0xFF6B4EE6),
+      'icon': Icons.psychology_rounded,
+      'desc': 'Maximum power for deep academic analysis.'
+    },
   };
 
   late TextEditingController _nameController;
@@ -204,7 +232,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 32),
 
           Text(
-            'AI Engine',
+            'Intelligence Orchestration',
             style: TextStyle(
               color: Theme.of(context).textTheme.bodyLarge?.color,
               fontSize: 24,
@@ -212,50 +240,117 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ).animate().slideY(begin: 0.1, duration: 400.ms, delay: 100.ms).fadeIn(),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
 
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: const Color(0xFF6B4EE6).withValues(alpha: 0.3)),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF6B4EE6).withValues(alpha: 0.1),
-                  blurRadius: 15,
-                  offset: const Offset(0, 8),
-                )
-              ]
+              color: const Color(0xFF6B4EE6).withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: const Color(0xFF6B4EE6).withValues(alpha: 0.2)),
             ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                dropdownColor: Theme.of(context).cardColor,
-                value: models.values.contains(settings.selectedModel) ? settings.selectedModel : models.values.first,
-                isExpanded: true,
-                icon: const Icon(Icons.keyboard_arrow_down_rounded, color: Color(0xFF6B4EE6)),
-                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                items: models.entries
-                    .map(
-                      (e) =>
-                          DropdownMenuItem(value: e.value, child: Text(e.key)),
-                    )
-                    .toList(),
-                onChanged: (v) {
-                  settings.setModel(v!);
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "AI Processing Modes",
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF00F2FE), fontSize: 14, letterSpacing: 1),
+                ),
+                const SizedBox(height: 12),
+                _buildModeGuide("Auto Mode", "Cognitive Claw selects the best AI automatically."),
+                _buildModeGuide("Fast Mode", "Faster responses with lightweight reasoning."),
+                _buildModeGuide("Smart Mode", "Balanced speed and intelligence."),
+                _buildModeGuide("Deep Research Mode", "Advanced reasoning and analysis."),
+              ],
+            ),
+          ).animate().slideY(begin: 0.1, duration: 400.ms, delay: 120.ms).fadeIn(),
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const Text('AI Engine Updated!'),
-                      backgroundColor: const Color(0xFF6B4EE6),
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    )
-                  );
-                },
-              ),
-            ),
-          ).animate().slideY(begin: 0.1, duration: 400.ms, delay: 150.ms).fadeIn(),
+          const SizedBox(height: 24),
+
+          Column(
+            children: models.entries.map((e) {
+              final isSelected = settings.selectedModel == e.value;
+              final meta = modelMetadata[e.value]!;
+              return Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                decoration: BoxDecoration(
+                  color: isSelected ? meta['color'].withValues(alpha: 0.1) : Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: isSelected ? meta['color'].withValues(alpha: 0.5) : Colors.transparent,
+                    width: 2,
+                  ),
+                ),
+                child: InkWell(
+                  onTap: () {
+                    settings.setModel(e.value);
+                    HapticFeedback.lightImpact();
+                  },
+                  borderRadius: BorderRadius.circular(24),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: (meta['color'] as Color).withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Icon(meta['icon'] as IconData, color: meta['color'] as Color, size: 28),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      e.key.split('(')[0].trim(),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        color: isSelected ? meta['color'] as Color : Theme.of(context).textTheme.bodyLarge?.color,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Flexible(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: (meta['color'] as Color).withValues(alpha: 0.2),
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: Text(
+                                        meta['tag'] as String,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(color: meta['color'] as Color, fontSize: 9, fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                meta['desc'] as String,
+                                style: TextStyle(color: Colors.grey, fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (isSelected)
+                          Icon(Icons.check_circle_rounded, color: meta['color'] as Color),
+                      ],
+                    ),
+                  ),
+                ),
+              ).animate().fadeIn().slideX(begin: 0.1);
+            }).toList(),
+          ),
 
           const SizedBox(height: 30),
 
@@ -508,6 +603,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ).animate().slideY(begin: 0.1, duration: 400.ms, delay: 350.ms).fadeIn(),
 
           const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModeGuide(String title, String desc) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text("• ", style: TextStyle(color: Color(0xFF00F2FE), fontWeight: FontWeight.bold)),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(fontSize: 13, height: 1.4),
+                children: [
+                  TextSpan(text: "$title → ", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                  TextSpan(text: desc, style: const TextStyle(color: Colors.grey)),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

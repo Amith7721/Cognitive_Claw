@@ -9,7 +9,7 @@ enum VisionMode {
 }
 
 class VisionAgentService {
-  static Future<String> analyzeText(String text, {VisionMode mode = VisionMode.general}) async {
+  static Future<String> analyzeText(String text, {VisionMode mode = VisionMode.general, String model = 'auto'}) async {
     String systemInstruction = "";
     
     switch (mode) {
@@ -44,9 +44,12 @@ $text
 
     final result = await OpenClawLLMService.generate(
       prompt: prompt,
-      model: 'openai/gpt-oss-20b:free',
+      model: model,
     );
 
-    return result.trim();
+    final response = result['response'] ?? '';
+    final usedModel = result['model'] ?? 'unknown';
+
+    return "$response\n\n---\n*Synapse Orchestration: ${usedModel.split('/').last}*";
   }
 }

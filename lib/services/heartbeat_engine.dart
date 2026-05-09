@@ -6,6 +6,7 @@ import '../services/heartbeat_service.dart';
 import '../services/cognitive_memory_service.dart';
 import '../services/openclaw_agent_service.dart';
 import '../providers/research_provider.dart';
+import '../core/constants/app_constants.dart';
 
 class HeartbeatAutonomousEngine {
   static Timer? _timer;
@@ -43,7 +44,7 @@ class HeartbeatAutonomousEngine {
       if (logs.length > 5) { // Only analyze if we have enough data
          final aiInsight = await OpenClawAgentService.analyzeBehavior(
            logs: logs,
-           model: 'google/gemini-2.0-flash-exp:free', // Default free model
+           model: AppConstants.defaultModel, 
          );
          await CognitiveMemoryService.saveAIInsight(aiInsight);
       }

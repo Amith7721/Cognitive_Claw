@@ -5,14 +5,13 @@ import '../services/calendar_service.dart';
 class SettingsProvider extends ChangeNotifier {
   late Box _box;
 
-  static const String _defaultModel = 'openai/gpt-oss-20b:free';
+  static const String _defaultModel = 'openrouter/free';
 
   static const List<String> _validModels = [
+    'openrouter/free',
     'openai/gpt-oss-20b:free',
+    'z-ai/glm-4.5-air:free',
     'openai/gpt-oss-120b:free',
-    'mistralai/mistral-7b-instruct:free',
-    'meta-llama/llama-3.1-8b-instruct:free',
-    'meta-llama/llama-3.3-70b-instruct:free',
   ];
 
   bool _calendarConnected = false;
@@ -60,9 +59,22 @@ class SettingsProvider extends ChangeNotifier {
 
   String get modelName {
     final id = selectedModel;
-    if (id.contains('gpt-oss')) return 'OpenAI Free';
-    if (id.contains('mistral')) return 'Mistral 7B (Free)';
-    return 'AI Engine';
+    if (id == 'auto') return 'Auto Mode (Orchestrated)';
+    if (id.contains('120b')) return 'GPT-OSS 120B (Deep Thinking)';
+    if (id.contains('20b')) return 'GPT-OSS 20B (Balanced)';
+    if (id.contains('mistral')) return 'Mistral 7B (Ultra Fast)';
+    if (id.contains('llama')) return 'Llama 3.3 (Premium)';
+    return 'Neural Engine';
+  }
+
+  String get modelTag {
+    final id = selectedModel;
+    if (id == 'auto') return 'Smart';
+    if (id.contains('120b')) return 'Deep Thinker';
+    if (id.contains('20b')) return 'Fast & Balanced';
+    if (id.contains('mistral')) return 'Ultra Fast';
+    if (id.contains('llama')) return 'Premium Intelligence';
+    return 'Active';
   }
 
   void updateProfile({

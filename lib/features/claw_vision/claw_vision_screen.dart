@@ -11,6 +11,7 @@ import '../../providers/task_provider.dart';
 import '../../models/task_item.dart';
 import '../../models/vision_insight.dart';
 import '../../providers/vision_provider.dart';
+import '../../providers/settings_provider.dart';
 import '../../services/cognitive_dna_service.dart';
 import '../../widgets/loading_animations.dart';
 
@@ -45,8 +46,9 @@ class _ClawVisionScreenState extends State<ClawVisionScreen> {
     });
 
     try {
+      final settings = context.read<SettingsProvider>();
       final text = await OCRService.extractText(picked.path);
-      final result = await VisionAgentService.analyzeText(text, mode: selectedMode);
+      final result = await VisionAgentService.analyzeText(text, mode: selectedMode, model: settings.selectedModel);
 
       setState(() {
         extractedText = text;
@@ -357,11 +359,15 @@ class _ClawVisionScreenState extends State<ClawVisionScreen> {
                     h1: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
                     h2: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                     blockquoteDecoration: BoxDecoration(
-                      color: const Color(0xFF00F2FE).withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      color: const Color(0xFF6B4EE6).withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(12),
                       border: const Border(left: BorderSide(color: Color(0xFF00F2FE), width: 4)),
                     ),
-                    blockquote: const TextStyle(color: Colors.white),
+                    blockquote: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ),
               ],

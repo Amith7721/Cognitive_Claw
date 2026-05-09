@@ -68,10 +68,12 @@ EFFICIENCY: 0.XX
 PULSE: Status
 ''';
 
-      final response = await OpenClawLLMService.generate(
+      final result = await OpenClawLLMService.generate(
         model: model,
         prompt: analysisPrompt,
       );
+
+      final response = result['response'] ?? "";
 
       // Parse the response
       final lines = response.split('\n');

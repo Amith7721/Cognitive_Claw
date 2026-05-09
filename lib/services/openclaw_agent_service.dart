@@ -72,12 +72,15 @@ Today's meetings:
 $meetingText
 ''';
 
-      String response = await OpenClawLLMService.generate(
+      final result = await OpenClawLLMService.generate(
         model: model,
         prompt: prompt,
       );
 
-      return response.trim();
+      final response = result['response'] ?? '';
+      final usedModel = result['model'] ?? 'unknown';
+
+      return "$response\n\n---\n*Active Neural Engine: ${usedModel.split('/').last}*";
     } catch (e) {
       return "AI agent failed: $e";
     }
@@ -111,12 +114,15 @@ Logs:
 $logs
 ''';
 
-      final response = await OpenClawLLMService.generate(
+      final result = await OpenClawLLMService.generate(
         model: model,
         prompt: prompt,
       );
 
-      return response.trim();
+      final response = result['response'] ?? '';
+      final usedModel = result['model'] ?? 'unknown';
+
+      return "$response\n\n---\n*Active Neural Engine: ${usedModel.split('/').last}*";
     } catch (e) {
       return "Analyzing productivity trends...";
     }
